@@ -50,31 +50,28 @@ const addContact = (req, res) => {
 
 const updateContact = (req, res) => {
   const { contactId } = req.params
+   
    const {
-      name, 
-      email,
-      phone
+    name, 
+    email,
+    phone
   } = req.body;
 
-  const contactIndx = contacts.findIndex(
-    ({ id }) => id === contactId
-  )
-  if (contactIndx === -1) {
+  const contact = contacts.find(contact => contact.id === contactId)
+  if (!contact) {
     return res.status(404).json({ message: "Not found" })
   }
   
  if (name) {
-    contacts[contactIndx].name = name;
+    contact.name = name;
   }
   if (email) {
-    contacts[contactIndx].email = email;
+    contact.email = email;
   }
   if (phone) {
-    contacts[contactIndx].phone = phone;
+    contact.phone = phone;
   }
-
-  const updatedContact = contacts[contactIndx]
-  res.status(200).json(contacts[contactIndx])
+  res.status(200).json(contact)
 }
     
 module.exports = {
