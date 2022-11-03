@@ -57,9 +57,13 @@ const updateContact = (req, res) => {
     phone
   } = req.body;
 
-  const contact = contacts.find(contact => contact.id === contactId)
+   const contact = contacts.find(contact => contact.id === contactId)
   if (!contact) {
     return res.status(404).json({ message: "Not found" })
+  }
+
+   if (name === undefined && email === undefined && phone === undefined) {
+    return res.status(404).json({ message: "missing fields" })
   }
   
  if (name) {
