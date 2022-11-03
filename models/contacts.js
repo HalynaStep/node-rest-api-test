@@ -50,32 +50,21 @@ const addContact = (req, res) => {
 
 const updateContact = (req, res) => {
   const { contactId } = req.params
-   
-   const {
-    name, 
-    email,
-    phone
-  } = req.body;
-
-   const contact = contacts.find(contact => contact.id === contactId)
-  if (!contact) {
-    return res.status(404).json({ message: "Not found" })
+  const body = req.body
+  const contactIndx = contacts.findIndex(
+    ({ id }) => id === contactId
+  );
+  if (contactIndx === -1) {
+    return res.status(404).json({ message: "Not found"})
   }
 
-   if (name === undefined && email === undefined && phone === undefined) {
-    return res.status(404).json({ message: "missing fields" })
+  if (Object.keys(body).length === 0) {
+    return res.status(400).json({ message: "missing fields"})
   }
-  
- if (name) {
-    contact.name = name;
-  }
-  if (email) {
-    contact.email = email;
-  }
-  if (phone) {
-    contact.phone = phone;
-  }
-  res.status(200).json(contact)
+
+  contacts[contactIndx] = { ...contacts[contactIndx], ...body };
+    
+  res.status(200).json(contacts[contactIndx])
 }
     
 module.exports = {
